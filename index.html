@@ -14,7 +14,7 @@
 </head>
 <body>
   <h1>Extracteur de photos d’un article</h1>
-  <p>Collez l’URL d’un article et obtenez tous les liens d’images en haute résolution (balises <code>&lt;a href&gt;</code>).</p>
+  <p>Collez l’URL d’un article et obtenez tous les liens d’images en haute résolution.</p>
 
   <input type="text" id="urlInput" placeholder="Collez l’URL ici">
   <button onclick="extractImages()">Extraire</button>
@@ -33,6 +33,9 @@
         const parser = new DOMParser();
         const doc = parser.parseFromString(data.contents, "text/html");
 
+        // Récupérer le domaine de base (ex: https://en.minghui.org)
+        const baseURL = new URL(url).origin;
+
         // Sélectionne les <a> qui contiennent une <img>
         const links = [...doc.querySelectorAll("a[href]")].filter(a => a.querySelector("img"));
 
@@ -41,12 +44,17 @@
           result.innerHTML = "<li>Aucun lien trouvé.</li>";
         } else {
           links.forEach(a => {
-            const href = a.href;
+            let href = a.getAttribute("href"); // garder la valeur brute
+
+            // Si le lien est relatif (commence par "/"), on le complète avec le domaine
+            if (href.startsWith("/")) {
+              href = baseURL + href;
+            }
 
             // Filtres : ignorer certains liens indésirables
             if (href.startsWith("file:///C:/html/")) return;
             if (href.startsWith("https://polux-spec-0.github.io/")) return;
-            if (href.startsWith("https://fr.minghui.org/")) return;
+	    if (href.startsWith("https://fr.minghui.org/")) return;
 
             const li = document.createElement("li");
             const link = document.createElement("a");
@@ -64,4 +72,3 @@
   </script>
 </body>
 </html>
-
