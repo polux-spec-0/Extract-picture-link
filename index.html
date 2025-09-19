@@ -54,7 +54,9 @@
             // Filtres : ignorer certains liens indésirables
             if (href.startsWith("file:///C:/html/")) return;
             if (href.startsWith("https://polux-spec-0.github.io/")) return;
-	    if (href.startsWith("https://fr.minghui.org/")) return;
+	    if (href.startsWith("https://en.minghui.org")) return;
+	    if (href.startsWith("https://en.minghui.org/cc/21/")) return;
+	    if (href.startsWith("https://en.minghui.org/html/")) return;
 
             const li = document.createElement("li");
             const link = document.createElement("a");
