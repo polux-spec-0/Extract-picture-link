@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Extracteur de photos</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+    h1 { color: #333; }
+    input { width: 70%; padding: 8px; }
+    button { padding: 8px 12px; margin-left: 5px; }
+    ul { margin-top: 20px; }
+    li { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Extracteur de photos d’un article</h1>
+  <p>Collez l’URL d’un article et obtenez tous les liens d’images en haute résolution (balises <code>&lt;a href&gt;</code>).</p>
+
+  <input type="text" id="urlInput" placeholder="Collez l’URL ici">
+  <button onclick="extractImages()">Extraire</button>
+
+  <ul id="result"></ul>
+
+  <script>
+    async function extractImages() {
+      const url = document.getElementById("urlInput").value;
+      const result = document.getElementById("result");
+      result.innerHTML = "<li>Chargement...</li>";
+
+      try {
+        const response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(url));
+        const data = await response.json();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data.contents, "text/html");
+
+        // Sélectionne les <a> qui contiennent une <img>
+        const links = [...doc.querySelectorAll("a[href]")].filter(a => a.querySelector("img"));
+
+        result.innerHTML = "";
+        if (links.length === 0) {
+          result.innerHTML = "<li>Aucun lien trouvé.</li>";
+        } else {
+          links.forEach(a => {
+            const href = a.href;
+
+            // Filtres : ignorer certains liens indésirables
+            if (href.startsWith("file:///C:/html/")) return;
+            if (href.startsWith("https://polux-spec-0.github.io/")) return;
+
+            const li = document.createElement("li");
+            const link = document.createElement("a");
+            link.href = href;
+            link.textContent = href;
+            link.target = "_blank";
+            li.appendChild(link);
+            result.appendChild(li);
+          });
+        }
+      } catch (err) {
+        result.innerHTML = "<li>Erreur : " + err + "</li>";
+      }
+    }
+  </script>
+</body>
+</html>
