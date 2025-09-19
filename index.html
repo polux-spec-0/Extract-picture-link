@@ -8,8 +8,8 @@
     h1 { color: #333; }
     input { width: 70%; padding: 8px; }
     button { padding: 8px 12px; margin-left: 5px; }
-    ul { margin-top: 20px; }
-    li { margin-bottom: 5px; }
+    ul { margin-top: 20px; padding-left: 0; }
+    li { margin-bottom: 5px; list-style-type: none; } /* 🔹 enlève les points devant */
   </style>
 </head>
 <body>
@@ -44,7 +44,7 @@
           result.innerHTML = "<li>Aucun lien trouvé.</li>";
         } else {
           links.forEach(a => {
-            let href = a.getAttribute("href"); // garder la valeur brute
+            let href = a.getAttribute("href"); // valeur brute
 
             // Si le lien est relatif (commence par "/"), on le complète avec le domaine
             if (href.startsWith("/")) {
@@ -54,8 +54,8 @@
             // Filtres : ignorer certains liens indésirables
             if (href.startsWith("file:///C:/html/")) return;
             if (href.startsWith("https://polux-spec-0.github.io/")) return;
-	   	    if (href.startsWith("https://en.minghui.org/cc/21/")) return;
-	        if (href.startsWith("https://en.minghui.org/html/")) return;
+	    if (href.startsWith("https://en.minghui.org/cc/21/")) return;
+	    if (href.startsWith("https://en.minghui.org/html/")) return;
 
             const li = document.createElement("li");
             const link = document.createElement("a");
@@ -73,4 +73,5 @@
   </script>
 </body>
 </html>
+
 
