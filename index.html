@@ -54,8 +54,11 @@
             // Filtres : ignorer certains liens indésirables
             if (href.startsWith("file:///C:/html/")) return;
             if (href.startsWith("https://polux-spec-0.github.io/")) return;
-	    if (href.startsWith("https://en.minghui.org/cc/21/")) return;
-	    if (href.startsWith("https://en.minghui.org/html/")) return;
+	        if (href.startsWith("https://en.minghui.org/cc/21/")) return;
+	        if (href.startsWith("https://en.minghui.org/html/")) return;
+	        if (href.startsWith("https://fr.minghui.org/cc/189/")) return;
+	        if (href.startsWith("https://fr.minghui.org/html/")) return;
+	        if (href.startsWith("https://fr.minghui.org/html/pages/subscribe/")) return;
 
             const li = document.createElement("li");
             const link = document.createElement("a");
@@ -73,5 +76,6 @@
   </script>
 </body>
 </html>
+
 
 
